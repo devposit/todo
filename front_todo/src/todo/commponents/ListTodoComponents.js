@@ -1,6 +1,11 @@
-const ListTodoComponents = () => {
+import ListTodoItem from '../../todo/commponents/ListTodoItem';
+const ListTodoComponents = ({todoList}) => {
    return (
-        <div>List Component</div>
+       <ul className="todoList">
+            {todoList.map((todo) => {
+                return (<li key={todo.id}><ListTodoItem todo={todo} /></li>);
+            })}
+        </ul>
    );     
 }
 

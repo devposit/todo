@@ -1,9 +1,54 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect, useCallback,useRef} from "react";
 import ListTodoComponents from "../../todo/commponents/ListTodoComponents";
+import InsertTodoComponents from "../../todo/commponents/InsertTodoComponents";
+
+/* const initSetting = {
+    todoDtoList: [],
+    pageNumList: [],
+    pageRequestDTO: null,
+    prev:false,
+    next:false,
+    totalCount: 0,
+    prevPage: 0,
+    nextPage: 0,
+    totalPage: 0,
+    current: 0
+} */
+
+export const dumpTodoData = [
+    {
+        id: '1',
+        text: '메모 테스트#1',
+        delYn: 'true',
+    },
+    {
+        id: '2',
+        text: '메모 테스트#2',
+        delYn: 'true',
+    },
+    {
+        id: '3',
+        text: '메모 테스트#3',
+        delYn: 'false',
+    },
+]
 
 
 const MainComponent = () => {
     const [clock,setClock] = useState("");
+    const [todoList,setTodoList] = useState(dumpTodoData);
+    const nextId = useRef(4);
+    const onInsert = useCallback((text) => {
+        const todo = {
+            id: nextId.current,
+            text: text,
+            delYn: false,
+        };
+        setTodoList(todoList.concat(todo));
+        nextId.current++;
+    },[todoList]);
+
+
 
     //실시간으로 시계 정보를 불러오는 함수
     const getLiveclock = () => {
@@ -38,10 +83,10 @@ const MainComponent = () => {
                 <span>{clock}</span>
             </div>
             <div>
-                <input type="text" />
+                <InsertTodoComponents onInsert={onInsert}/>
             </div>
             <div>
-                <ListTodoComponents />
+                <ListTodoComponents todoList={todoList}/>
             </div>   
         </div>
     );
